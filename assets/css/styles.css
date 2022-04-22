@@ -1,0 +1,240 @@
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+.name {
+    font-family: "Lobster";
+    font-size: 5em;
+    padding-bottom: 20px;
+}
+
+.layer {
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    margin-top: -4%;
+    margin-left: -200px;
+    height: 170px;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: white;
+    color: #6b6b6b;
+    box-shadow: 2px 2px 4px #000000;
+}
+
+.choose1,
+.choose2 {
+    display: inline-block;
+    line-height: 2.5rem;
+    border-radius: 100%;
+    border: 2px solid lightgray;
+    height: 70px;
+    width: 70px;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-size: 2.5em;
+    background-color: white;
+}
+
+.choose1:hover,
+.choose2:hover {
+    border: 2px solid #3fcc64;
+}
+
+.layer2 {
+    display: none;
+    text-align: center;
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    margin-top: -4%;
+    margin-left: -200px;
+    height: 170px;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: white;
+    color: #6b6b6b;
+    z-index: 1;
+    box-shadow: 2px 2px 4px #000000;
+}
+
+.end-game {
+    display: inline-block;
+    line-height: 2.5rem;
+    padding: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+    font-size: 1.5em;
+    border: none;
+    color: #4286f4;
+    background-color: white;
+}
+
+.end-game:hover {
+    color: #3266ba;
+}
+
+.layer3 {
+    display: none;
+    text-align: center;
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    margin-top: -4%;
+    margin-left: -200px;
+    height: 170px;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: white;
+    color: #6b6b6b;
+    z-index: 1;
+    box-shadow: 2px 2px 4px #000000;
+}
+
+.draw {
+    display: inline-block;
+    line-height: 2.5rem;
+    padding: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+    font-size: 1.5em;
+    border: none;
+    color: #4286f4;
+    background-color: white;
+}
+
+.draw:hover {
+    color: #3266ba;
+}
+
+.range {
+    margin: 0 auto;
+    font-size: 1.5em;
+}
+
+.you-score {
+    text-align: right;
+}
+
+.cpu-score {
+    text-align: left;
+}
+
+.player-turn {
+    padding: 5px;
+    border-bottom: 4px solid #4286f4;
+}
+
+.cpu-turn {
+    padding: 5px;
+}
+
+.grid-container {
+    margin-top: 30px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+}
+
+.container {
+    text-align: center;
+    width: 332px;
+}
+
+.grid-item {
+    height: 100px;
+    width: 100px;
+    border: 2px solid #6b6b6b;
+    padding-left: 10px;
+    font-size: 30px;
+    text-align: center;
+    background-color: white;
+}
+
+#item1,
+#item2,
+#item3 {
+    border-top: none;
+}
+
+#item1,
+#item4,
+#item7 {
+    border-left: none;
+}
+
+#item3,
+#item6,
+#item9 {
+    border-right: none;
+}
+
+#item7,
+#item8,
+#item9 {
+    border-bottom: none;
+}
+
+.reset {
+    margin-top: 30px;
+    border: none;
+    background-color: white;
+    color: #e29126;
+    font-size: 1.2em;
+}
+
+.reset:hover {
+    margin-top: 30px;
+    border: none;
+    background-color: white;
+    color: #af6a0f;
+    font-size: 1.2em;
+}
+
+
+/* Modal Content/Box */
+
+
+/* Overlay winning box */
+
+#overlay {
+    position: fixed;
+    /* Sit on top of the page content */
+    display: none;
+    /* Hidden by default */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Black background with opacity */
+    z-index: 2;
+    /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer;
+    /* Add a pointer on hover */
+}
+
+#boite {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    heigth: 200px;
+    border: 1px solid black;
+}
+
+#text {
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
