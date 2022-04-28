@@ -11,15 +11,15 @@
 </head>
 
 <body>
-    <div class='container'>
-        <h1 class='name'>Tic-Tac-Toe</h1>
 
+    <div class='container'>
+        <h1 class='name'>Morpion</h1>
         <div class='row range'>
-            <div class='col-6 turn player-turn row'>
+            <div class='col-6 player-turn turn row'>
                 <div class='col-6 score you-score'>0</div>
                 <div class='col-6 you-name'>YOU</div>
             </div>
-            <div class='col-6 turn cpu-turn row'>
+            <div class='col-6 cpu-turn row'>
                 <div class='col-6'>CPU</div>
                 <div class='col-6 cpu-score'>0</div>
             </div>
@@ -35,6 +35,23 @@
             <button class='grid-item' id='item7' onclick='choiseCase(this.id)'></button>
             <button class='grid-item' id='item8' onclick='choiseCase(this.id)'></button>
             <button class='grid-item' id='item9' onclick='choiseCase(this.id)'></button>
+        </div>
+        <button class="reset" onclick="resetGame()">Reset Game</button>
+
+        <div id="overlay" class="d-none">
+            <div class="layer">
+                <div class="box-title">Choose X or O to start</div>
+                <div>
+                    <button class="choose1 color1" id="idO" onclick="choosePawn(this.id)">O</button>
+                    <button class="choose2 color2" id="idX" onclick="choosePawn(this.id)">X</button>
+                </div>
+            </div>
+            <div class="layer2 d-none">
+                <div class="game-result"></div>
+                <div>
+                    <button class="end-game" onclick="again()">Again</button>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="assets/js/morpion.js"></script>
