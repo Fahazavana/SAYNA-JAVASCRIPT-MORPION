@@ -38,11 +38,11 @@
 }
 
 .color1 {
-    color: #e29126;
+    color: #4286f4;
 }
 
 .color2 {
-    color: #4286f4;
+    color: #e29126;
 }
 
 .choose1:hover,
@@ -85,7 +85,6 @@
 }
 
 .layer3 {
-    display: none;
     text-align: center;
     position: absolute;
     width: 400px;
@@ -257,7 +256,7 @@
     font-size: 2rem;
 }
 
-.game-result {
+#result {
     font-size: 1.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.25rem;

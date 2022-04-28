@@ -39,7 +39,14 @@
         <button class="reset" onclick="resetGame()">Reset Game</button>
 
         <div id="overlay" class="d-none">
-            <div class="layer">
+            <div class="layer3 d-none">
+                <div class="box-title"> Chose a level </div>
+                <button id="level0" class="w-25 btn btn-success" onclick="setLevel(this.id)">Easy</button>
+                <button id="level1" class="w-25 btn btn-warning mx-2" onclick="setLevel(this.id)">Medium</button>
+                <button id="level2" class="w-25 btn btn-danger" onclick="setLevel(this.id)">Hard</button>
+            </div>
+
+            <div class="layer d-none">
                 <div class="box-title">Choose X or O to start</div>
                 <div>
                     <button class="choose1 color1" id="idO" onclick="choosePawn(this.id)">O</button>
@@ -47,7 +54,7 @@
                 </div>
             </div>
             <div class="layer2 d-none">
-                <div class="game-result"></div>
+                <div id="result"></div>
                 <div>
                     <button class="end-game" onclick="again()">Again</button>
                 </div>

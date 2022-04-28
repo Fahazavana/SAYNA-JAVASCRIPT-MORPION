@@ -1,53 +1,77 @@
 const GAMES = {
     cpu: "X",
     you: "O",
-    youScore: 0,
+    playerScore: 0,
     cpuScore: 0,
+    mode: 0,
     reset: false,
+    result: "",
     moveCounter: 0,
     firstStart: true,
     playagain: false,
     board: [0, 1, 2, 3, 4, 5, 6, 7, 8]
 };
 
-const color = {
-    cpu: "",
-    player: ""
-}
 let turn = GAMES.firstStart; // true = you; false=cpu
 
-document.addEventListener('load', showOverlay());
+const color = {
+        cpu: "",
+        player: ""
+    }
+    // Récupération des cases à clicker
+const items = document.getElementsByClassName('grid-item');
+
+document.addEventListener('load', initGame());
 
 // Affiche ou Cahche l'overlay
-function showOverlay() {
+function toggleOverlay() {
     document.querySelector("#overlay").classList.toggle("d-none")
 }
 
-function showLayer() {
+function toggleLayer() {
     document.querySelector(".layer").classList.toggle("d-none");
 }
 
-function showLayer2() {
+function toggleLayer2() {
     document.querySelector(".layer2").classList.toggle("d-none");
 }
 
-// Récupération des cases à clicker
-const items = document.getElementsByClassName('grid-item');
+function toggleLayer3() {
+    document.querySelector(".layer3").classList.toggle("d-none");
+}
+
+function initGame() {
+    toggleOverlay();
+    toggleLayer3();
+}
+
+
+/* Mode de Jeux du cpu
+ * 0 : Le cpu fear des choix  aléatoire sur les case vide
+ * 1 : le cpu alterne entre choix aléatoire et Minimax (hybride)
+ * 2 : Le cpu utilise toujour Minimax
+ */
+function setLevel(id) {
+    GAMES.mode = parseInt(id[5])
+    toggleLayer();
+    toggleLayer3();
+}
+
 
 function choosePawn(id) {
     if (id == "idX") {
-        GAMES.you = "X";
+        GAMES.player = "X";
         GAMES.cpu = "O"
-        color.you = "color1"
-        color.cpu = "color2"
-    } else {
-        GAMES.you = "O";
-        GAMES.cpu = "X"
-        color.you = "color2"
         color.cpu = "color1"
+        color.player = "color2"
+    } else {
+        GAMES.player = "O";
+        GAMES.cpu = "X"
+        color.cpu = "color2"
+        color.player = "color1"
     }
-    showLayer()
-    showOverlay()
+    toggleLayer()
+    toggleOverlay()
     if (GAMES.playagain) {
         playAgain();
     }
@@ -60,20 +84,17 @@ function updateBoard(id, player) {
     GAMES.board[index] = player;
 }
 
-
-// Marquage d'un case
+// Marquage d'un case joué
 function markSquare(id, player) {
     let square = document.querySelector("#" + id)
-
     if (player == GAMES.cpu) {
         square.textContent = player;
         square.classList.add(color.cpu)
     } else {
         square.textContent = player;
-        square.classList.add(color.you)
+        square.classList.add(color.player)
     }
 }
-
 // Verifie s'il y a un gagnant
 function boardSatus(board, player) {
     let result = {
@@ -130,18 +151,17 @@ function switchTurn() {
     document.querySelector(".player-turn").classList.toggle("turn");
 }
 
-
 // Le cpu joue
 function cpuMove() {
     /* Algorithme Minimax  pour trouver 
      * le meilleur emplacemnt pour le pion du cpu 
      */
-    function miniMax(board, player) {
+    function miniMax(board, depth, player) {
         var emptyIndex = getEmptySquares();
-        if (boardSatus(board, GAMES.you).isWinner) {
-            return { score: -10 };
+        if (boardSatus(board, GAMES.player).isWinner) {
+            return { score: -100 + depth };
         } else if (boardSatus(board, GAMES.cpu).isWinner) {
-            return { score: 10 };
+            return { score: 100 + depth };
         } else if (emptyIndex.length === 0) {
             return { score: 0 };
         }
@@ -151,10 +171,10 @@ function cpuMove() {
             move.index = board[emptyIndex[i]];
             board[emptyIndex[i]] = player;
             if (player == GAMES.cpu) {
-                var result = miniMax(board, GAMES.you);
+                var result = miniMax(board, depth + 1, GAMES.player);
                 move.score = result.score;
             } else {
-                var result = miniMax(board, GAMES.cpu);
+                var result = miniMax(board, depth + 1, GAMES.cpu);
                 move.score = result.score;
             }
             board[emptyIndex[i]] = move.index;
@@ -182,26 +202,49 @@ function cpuMove() {
         return moves[bestMove];
     }
 
-    console.log("find move")
-        // Marque la case  retourné par l'algo MiniMax
-    let move = miniMax(GAMES.board, GAMES.cpu),
-        id = "item" + (move.index + 1);
-    console.log(move)
-    markSquare(id, GAMES.cpu)
+
+    function randomMove() {
+        let emptyIndex = getEmptySquares(),
+            index = Math.floor(Math.random() * emptyIndex.length);
+        return emptyIndex[index];
+    }
+
+    function getCpuMove() {
+        switch (GAMES.mode) {
+            case 0:
+                return randomMove();
+            case 1:
+                if (Math.round(Math.random()) == 0) {
+                    return randomMove();
+                } else {
+                    return miniMax(GAMES.board, 0, GAMES.cpu).index;
+                }
+            case 2:
+                return miniMax(GAMES.board, 0, GAMES.cpu).index
+            default:
+                break;
+        }
+    }
+
+    let move = getCpuMove();
+    let id = "item" + (move + 1);
+    markSquare(id, GAMES.cpu);
     updateBoard(id, GAMES.cpu);
+    GAMES.moveCounter++;
     if (boardSatus(GAMES.board, GAMES.cpu).isWinner) {
-        showResult("cpu");
+        GAMES.cpuScore++;
+        GAMES.result = GAMES.cpu;
+        setTimeout(showResult, 1500);
     } else {
+        GAMES.result = "draw";
         if (getEmptySquares().length == 0) {
-            showResult("draw");
+            setTimeout(showResult, 1500);
         } else {
-            switchTurn();
+            setTimeout(switchTurn, 500);
             turn = true;
         }
     }
 }
-
-
 
 // Verifie si la case cliqué est vide
 function isEmpty(id) {
@@ -209,22 +252,24 @@ function isEmpty(id) {
     return (typeof GAMES.board[index] === "number") ? true : false;
 }
 
-
 /* Marque la case choisie par l'utilisateur s'il est vide
  * et alterne le tour.
  */
 function choiseCase(id) {
     if (isEmpty(id)) {
         if (turn) {
-            markSquare(id, GAMES.you);
-            updateBoard(id, GAMES.you);
+            markSquare(id, GAMES.player);
+            updateBoard(id, GAMES.player);
             GAMES.moveCounter++;
             turn = false;
-            if (boardSatus(GAMES.board, GAMES.you).isWinner) {
-                showResult("player")
+            if (boardSatus(GAMES.board, GAMES.player).isWinner) {
+                GAMES.playerScore++;
+                GAMES.result = GAMES.player;
+                setTimeout(showResult, 1500)
             } else {
                 if (getEmptySquares().length == 0) {
-                    showResult("draw");
+                    GAMES.result = "draw"
+                    setTimeout(showResult, 1500);
                 } else {
                     switchTurn();
                     setTimeout(cpuMove, 500);
@@ -234,8 +279,6 @@ function choiseCase(id) {
     }
 }
 
-
-
 // Lister les emplacement vide
 function getEmptySquares() {
     return GAMES.board.filter(item => typeof item === "number")
@@ -244,10 +287,10 @@ function getEmptySquares() {
 // Mise à jour du leaderboard
 function updateScore(result) {
     switch (result) {
-        case "player":
-            document.querySelector(".you-score").textContent = GAMES.youScore;
+        case GAMES.player:
+            document.querySelector(".you-score").textContent = GAMES.playerScore;
             break;
-        case "cpu":
+        case GAMES.cpu:
             document.querySelector(".cpu-score").textContent = GAMES.cpuScore;
             break;
         default:
@@ -255,51 +298,43 @@ function updateScore(result) {
     }
 }
 
-
-
 // Affichage du resultat
-function showResult(result) {
-    showOverlay();
+function showResult() {
+    toggleOverlay();
     let text = "";
-    if (result == "player") {
-        GAMES.youScore++;
-        text = "Win <br> Score +1"
+    updateScore(GAMES.result);
+    if (GAMES.result == GAMES.player) {
+        text = '<div id="result" class="text-success py-2"> Win <br> Score +1</div>';
     } else {
-        if (result == "cpu") {
-            text = "Defeat <br> CPU Score +1"
-            GAMES.cpuScore++;
+        if (GAMES.result == GAMES.cpu) {
+            text = '<div id="result" class="text-danger py-2"> Defeat <br> Score +1</div>';
         } else {
-            if (result == "draw") {
-                text = "DRAW"
+            if (GAMES.result == "draw") {
+                text = '<div id="result" class="text-primary py-2">DRAW</div>';
             }
         }
     }
-    document.querySelector(".layer2 > .game-result").innerHTML = text;
-    showLayer2()
-    updateScore(result);
+    document.querySelector("#result").outerHTML = text;
+    toggleLayer2()
 }
-
 
 
 // Réjoué une partie
 function playAgain() {
-    console.log("Play Now")
     GAMES.reset ? {} : turn = !(GAMES.firstStart);
     GAMES.firstStart = turn;
     if (turn) {
         if (document.querySelector(".cpu-turn").classList.contains("turn")) {
             document.querySelector(".cpu-turn").classList.toggle("turn");
             document.querySelector(".player-turn").classList.toggle("turn");
-
         }
 
     } else {
-        console.log("Cpu Turn")
         if (document.querySelector(".player-turn").classList.contains("turn")) {
             document.querySelector(".player-turn").classList.toggle("turn");
             document.querySelector(".cpu-turn").classList.toggle("turn");
         }
-        setTimeout(cpuMove, 700)
+        setTimeout(cpuMove, 800)
     }
 
 }
@@ -308,8 +343,8 @@ function playAgain() {
 function again() {
     reset();
     GAMES.playagain = true;
-    GAMES.reset ? {} : showLayer2();
-    showLayer();
+    toggleLayer2();
+    toggleLayer();
 }
 
 // Vide le contenu de toute les cases
@@ -329,15 +364,22 @@ function reset() {
 
 // Réinitialise le jeux
 function resetGame() {
-    console.log("game reset")
-    GAMES.youScore = 0;
+    reset();
+    GAMES.playerScore = 0;
     GAMES.cpuScore = 0;
     GAMES.moveCounter = 0;
     GAMES.firstStart = true;
     turn = GAMES.firstStart;
     GAMES.reset = true;
-    updateScore("player");
-    updateScore("cpu");
-    showOverlay();
-    again();
+    updateScore(GAMES.cpu);
+    updateScore(GAMES.player);
+    if (!(document.querySelector(".layer").classList)) {
+        toggleLayer()
+    }
+    if (!(document.querySelector(".layer2").classList)) {
+        toggleLayer2()
+    }
+    setTimeout(500)
+    toggleOverlay();
+    toggleLayer3();
 }
