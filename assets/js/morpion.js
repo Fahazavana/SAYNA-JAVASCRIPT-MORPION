@@ -155,6 +155,7 @@ function switchTurn() {
 function cpuMove() {
     /* Algorithme Minimax  pour trouver 
      * le meilleur emplacemnt pour le pion du cpu 
+     * Plus d'info : https://fr.m.wikipedia.org/wiki/Algorithme_minimax
      */
     function miniMax(board, depth, player) {
         var emptyIndex = getEmptySquares();
@@ -230,15 +231,14 @@ function cpuMove() {
     let id = "item" + (move + 1);
     markSquare(id, GAMES.cpu);
     updateBoard(id, GAMES.cpu);
-    GAMES.moveCounter++;
     if (boardSatus(GAMES.board, GAMES.cpu).isWinner) {
         GAMES.cpuScore++;
         GAMES.result = GAMES.cpu;
-        setTimeout(showResult, 1500);
+        setTimeout(showResult, 1200);
     } else {
         GAMES.result = "draw";
         if (getEmptySquares().length == 0) {
-            setTimeout(showResult, 1500);
+            setTimeout(showResult, 1200);
         } else {
             setTimeout(switchTurn, 500);
             turn = true;
@@ -260,16 +260,15 @@ function choiseCase(id) {
         if (turn) {
             markSquare(id, GAMES.player);
             updateBoard(id, GAMES.player);
-            GAMES.moveCounter++;
             turn = false;
             if (boardSatus(GAMES.board, GAMES.player).isWinner) {
                 GAMES.playerScore++;
                 GAMES.result = GAMES.player;
-                setTimeout(showResult, 1500)
+                setTimeout(showResult, 1200)
             } else {
                 if (getEmptySquares().length == 0) {
                     GAMES.result = "draw"
-                    setTimeout(showResult, 1500);
+                    setTimeout(showResult, 1200);
                 } else {
                     switchTurn();
                     setTimeout(cpuMove, 500);
@@ -304,13 +303,13 @@ function showResult() {
     let text = "";
     updateScore(GAMES.result);
     if (GAMES.result == GAMES.player) {
-        text = '<div id="result" class="text-success py-2"> Win <br> Score +1</div>';
+        text = '<div id="result" class="text-success pt-3 pb-2"> Win <br> Score +1</div>';
     } else {
         if (GAMES.result == GAMES.cpu) {
-            text = '<div id="result" class="text-danger py-2"> Defeat <br> Score +1</div>';
+            text = '<div id="result" class="text-danger py-3 pb-2"> Defeat <br> Score +1</div>';
         } else {
             if (GAMES.result == "draw") {
-                text = '<div id="result" class="text-primary py-2">DRAW</div>';
+                text = '<div id="result" class="draw py-3">DRAW</div>';
             }
         }
     }
@@ -350,36 +349,25 @@ function again() {
 // Vide le contenu de toute les cases
 function reset() {
     for (var i = 0; i < items.length; i++) {
-        items[i].textContent = ''
-        if (items[i].classList.contains("color1")) {
-            items[i].classList.remove("color1")
-        }
-        if (items[i].classList.contains("color2")) {
-            items[i].classList.remove("color2")
-        }
+        items[i].textContent = '';
+        items[i].classList.contains("color1") ? items[i].classList.remove("color1") : {};
+        items[i].classList.contains("color2") ? items[i].classList.remove("color2") : {};
     }
     GAMES.board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    GAMES.moveCounter = 0;
 }
 
 // Réinitialise le jeux
 function resetGame() {
     reset();
-    GAMES.playerScore = 0;
     GAMES.cpuScore = 0;
-    GAMES.moveCounter = 0;
+    GAMES.reset = true;
+    GAMES.playerScore = 0;
     GAMES.firstStart = true;
     turn = GAMES.firstStart;
-    GAMES.reset = true;
     updateScore(GAMES.cpu);
     updateScore(GAMES.player);
-    if (!(document.querySelector(".layer").classList)) {
-        toggleLayer()
-    }
-    if (!(document.querySelector(".layer2").classList)) {
-        toggleLayer2()
-    }
-    setTimeout(500)
+    document.querySelector(".layer").classList ? {} : toggleLayer();
+    document.querySelector(".layer2").classList ? {} : toggleLayer2();
     toggleOverlay();
     toggleLayer3();
 }

@@ -73,7 +73,6 @@
     padding: 5px;
     margin-left: 40px;
     margin-right: 40px;
-    margin-top: 20px;
     font-size: 1.5em;
     border: none;
     color: #4286f4;
@@ -110,12 +109,8 @@
     margin-top: 20px;
     font-size: 1.5em;
     border: none;
-    color: #4286f4;
+    color: #e29126;
     background-color: white;
-}
-
-.draw:hover {
-    color: #3266ba;
 }
 
 .range {
@@ -161,7 +156,7 @@
     width: 100px;
     border: 2px solid #6b6b6b;
     padding-left: 10px;
-    font-size: 30px;
+    font-size: 2.5rem;
     text-align: center;
     background-color: white;
     font-weight: bold;
