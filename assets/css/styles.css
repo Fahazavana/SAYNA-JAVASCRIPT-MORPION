@@ -1,5 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Pacifico);
 @import url(https://fonts.googleapis.com/css?family=Lobster);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes showIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
 .name {
     font-family: "Lobster";
     font-size: 5em;
@@ -20,6 +38,7 @@
     background-color: white;
     color: #6b6b6b;
     box-shadow: 2px 2px 4px #000000;
+    animation: showIn 0.8s;
 }
 
 .choose1,
@@ -65,6 +84,7 @@
     color: #6b6b6b;
     z-index: 1;
     box-shadow: 2px 2px 4px #000000;
+    animation: showIn 0.8s;
 }
 
 .end-game {
@@ -98,6 +118,7 @@
     color: #6b6b6b;
     z-index: 1;
     box-shadow: 2px 2px 4px #000000;
+    animation: showIn 0.8s;
 }
 
 .draw {
@@ -227,6 +248,7 @@
     /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer;
     /* Add a pointer on hover */
+    animation: fadeIn 0.8s;
 }
 
 #boite {

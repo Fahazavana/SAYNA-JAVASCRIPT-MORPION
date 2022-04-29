@@ -26,15 +26,15 @@ document.addEventListener('load', initGame());
 // Affiche ou Cahche l'overlay
 function toggleOverlay() {
     document.querySelector("#overlay").classList.toggle("d-none")
-}
+};
 
 function toggleLayer() {
     document.querySelector(".layer").classList.toggle("d-none");
-}
+};
 
 function toggleLayer2() {
     document.querySelector(".layer2").classList.toggle("d-none");
-}
+};
 
 function toggleLayer3() {
     document.querySelector(".layer3").classList.toggle("d-none");
@@ -47,9 +47,9 @@ function initGame() {
 
 
 /* Mode de Jeux du cpu
- * 0 : Le cpu fear des choix  aléatoire sur les case vide
- * 1 : le cpu alterne entre choix aléatoire et Minimax (hybride)
- * 2 : Le cpu utilise toujour Minimax
+ * 0 EASY: Le cpu fear des choix  aléatoire sur les case vide
+ * 1 MEDIUM: le cpu alterne entre choix aléatoire et Minimax (hybride)
+ * 2 HARD: Le cpu utilise toujour Minimax
  */
 function setLevel(id) {
     GAMES.mode = parseInt(id[5])
@@ -158,7 +158,7 @@ function cpuMove() {
      * Plus d'info : https://fr.m.wikipedia.org/wiki/Algorithme_minimax
      */
     function miniMax(board, depth, player) {
-        var emptyIndex = getEmptySquares();
+        let emptyIndex = getEmptySquares();
         if (boardSatus(board, GAMES.player).isWinner) {
             return { score: -100 + depth };
         } else if (boardSatus(board, GAMES.cpu).isWinner) {
@@ -166,23 +166,23 @@ function cpuMove() {
         } else if (emptyIndex.length === 0) {
             return { score: 0 };
         }
-        var moves = [];
+        let moves = [];
         for (var i = 0; i < emptyIndex.length; i++) {
             var move = {};
             move.index = board[emptyIndex[i]];
             board[emptyIndex[i]] = player;
             if (player == GAMES.cpu) {
-                var result = miniMax(board, depth + 1, GAMES.player);
+                let result = miniMax(board, depth + 1, GAMES.player);
                 move.score = result.score;
             } else {
-                var result = miniMax(board, depth + 1, GAMES.cpu);
+                let result = miniMax(board, depth + 1, GAMES.cpu);
                 move.score = result.score;
             }
             board[emptyIndex[i]] = move.index;
             moves.push(move);
         }
 
-        var bestMove;
+        let bestMove;
         if (player === GAMES.cpu) {
             var bestScore = -10000;
             for (var i = 0; i < moves.length; i++) {
@@ -192,7 +192,7 @@ function cpuMove() {
                 }
             }
         } else {
-            var bestScore = 10000;
+            let bestScore = 10000;
             for (var i = 0; i < moves.length; i++) {
                 if (moves[i].score < bestScore) {
                     bestScore = moves[i].score;
@@ -306,7 +306,7 @@ function showResult() {
         text = '<div id="result" class="text-success pt-3 pb-2"> Win <br> Score +1</div>';
     } else {
         if (GAMES.result == GAMES.cpu) {
-            text = '<div id="result" class="text-danger py-3 pb-2"> Defeat <br> Score +1</div>';
+            text = '<div id="result" class="text-danger py-3 pb-2"> Defeat <br> CPU Score +1</div>';
         } else {
             if (GAMES.result == "draw") {
                 text = '<div id="result" class="draw py-3">DRAW</div>';
